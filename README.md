@@ -1,66 +1,37 @@
-## Foundry
+## Jungle Vault
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+An attempt at implementing an ERC-4626 vault as part of the [2023 Jungle Hackathon](https://x.com/BowTiedPickle/status/1705308823718613422)
 
-Foundry consists of:
+### ERC-4626 Vault
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- TODO: figure out how to account for deposited RETH in `totalAssets`
+- TODO: add logic for fees and maybe a float amount within `totalAssets`
 
-## Documentation
+### Yield Strategy
 
-https://book.getfoundry.sh/
+- TODO: find an abstraction that would work for more strategies
 
-## Usage
+### Other outstanding TODOs:
 
-### Build
+- Add deployment script
+- Add tests
+
+### Usage
+
+#### Install
+
+```shell
+$ forge install
+```
+
+#### Build
 
 ```shell
 $ forge build
 ```
 
-### Test
+#### Test
 
 ```shell
 $ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
 ```
