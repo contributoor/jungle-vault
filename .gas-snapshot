@@ -1,0 +1,5 @@
+VaultTest:testCanDeposit() (gas: 1674831)
+VaultTest:testCanSetStrategyIfOwner() (gas: 1600851)
+VaultTest:testCanWithdraw() (gas: 1663950)
+VaultTest:testRevertIfSetStrategyAndStrategyReverts() (gas: 1555033)
+VaultTest:testRevertIfSetStrategyByNonOwner() (gas: 1554993)
