@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import {Auth} from "lib/solmate/src/auth/Auth.sol";
+import {Owned} from "lib/solmate/src/auth/Owned.sol";
 import {ERC4626} from "lib/solmate/src/mixins/ERC4626.sol";
 import {ERC20} from "lib/solmate/src/tokens/ERC20.sol";
 
 import {YieldStrategy} from "./interfaces/YieldStrategy.sol";
 
-contract Vault is ERC4626, Auth {
+contract Vault is ERC4626, Owned {
     YieldStrategy public activeStrategy;
 
     event StrategyUpdate(YieldStrategy indexed strategy);
@@ -22,14 +22,14 @@ contract Vault is ERC4626, Auth {
             string(abi.encodePacked("Jungle ", _asset.name(), "Vault")),
             string(abi.encodePacked("jv", _asset.symbol()))
         )
-        Auth(Auth(msg.sender).owner(), Auth(msg.sender).authority())
+        Owned(msg.sender)
     {
         activeStrategy = _initialStrategy;
     }
 
     receive() external payable {}
 
-    function setStrategy(YieldStrategy newStrategy) external requiresAuth {
+    function setStrategy(YieldStrategy newStrategy) external onlyOwner {
         uint256 balance = activeStrategy.withdrawAll();
         newStrategy.deposit(balance);
         activeStrategy = newStrategy;
