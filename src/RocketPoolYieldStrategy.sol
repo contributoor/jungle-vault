@@ -80,10 +80,9 @@ contract RocketPoolYieldStrategy is YieldStrategy {
         return RocketTokenRETHInterface(rethAddress);
     }
 
-    function availableDepositCapacity() public view returns (uint256) {
+    function availableDepositCapacity() internal view returns (uint256) {
         uint256 deposited = rocketDepositPool().getBalance();
         uint256 maxPoolSize = rocketDepositProtocol().getMaximumDepositPoolSize();
-
         return maxPoolSize - deposited;
     }
 
