@@ -5,16 +5,12 @@ import {Owned} from "lib/solmate/src/auth/Owned.sol";
 import {ERC4626} from "lib/solmate/src/mixins/ERC4626.sol";
 import {ERC20} from "lib/solmate/src/tokens/ERC20.sol";
 
+import {VaultEvents} from "./interfaces/VaultEvents.sol";
 import {YieldStrategy} from "./interfaces/YieldStrategy.sol";
 
-contract Vault is ERC4626, Owned {
-    YieldStrategy public activeStrategy;
+contract Vault is ERC4626, Owned, VaultEvents {
 
-    event StrategyUpdate(YieldStrategy indexed strategy);
-    event Deposit(address indexed from, YieldStrategy indexed strategy, uint256 assets);
-    event Withdrawal(
-        address indexed from, YieldStrategy indexed strategy, uint256 assets, uint256 shares, uint256 totalSupply
-    );
+    YieldStrategy public activeStrategy;
 
     constructor(ERC20 _asset, YieldStrategy _initialStrategy)
         ERC4626(
