@@ -4,11 +4,13 @@ pragma solidity ^0.8.13;
 import {Owned} from "lib/solmate/src/auth/Owned.sol";
 import {ERC4626} from "lib/solmate/src/mixins/ERC4626.sol";
 import {ERC20} from "lib/solmate/src/tokens/ERC20.sol";
+import {SafeTransferLib} from "lib/solmate/src/utils/SafeTransferLib.sol";
 
 import {VaultEvents} from "./interfaces/VaultEvents.sol";
 import {YieldStrategy} from "./interfaces/YieldStrategy.sol";
 
 contract Vault is ERC4626, Owned, VaultEvents {
+    using SafeTransferLib for ERC20;
 
     YieldStrategy public activeStrategy;
 
@@ -37,6 +39,7 @@ contract Vault is ERC4626, Owned, VaultEvents {
     }
 
     function afterDeposit(uint256 assets, uint256 /* shares */ ) internal override {
+        ERC20(activeStrategy.underlyingAsset()).safeApprove(address(activeStrategy), assets);
         activeStrategy.deposit(assets);
         emit Deposit(msg.sender, activeStrategy, assets);
     }

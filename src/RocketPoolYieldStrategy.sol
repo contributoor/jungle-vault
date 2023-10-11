@@ -9,12 +9,14 @@ import {RocketTokenRETHInterface} from "lib/rocketpool/contracts/interface/token
 import {ERC20} from "lib/solmate/src/tokens/ERC20.sol";
 import {WETH} from "lib/solmate/src/tokens/WETH.sol";
 import {FixedPointMathLib} from "lib/solmate/src/utils/FixedPointMathLib.sol";
+import {SafeTransferLib} from "lib/solmate/src/utils/SafeTransferLib.sol";
 import {IUniswapV2Router02} from "lib/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 
 import {YieldStrategy} from "./interfaces/YieldStrategy.sol";
 
 contract RocketPoolYieldStrategy is YieldStrategy {
     using FixedPointMathLib for uint256;
+    using SafeTransferLib for ERC20;
 
     RocketStorageInterface internal immutable rocketStorage;
     IUniswapV2Router02 internal immutable uniswapRouter;
@@ -30,6 +32,7 @@ contract RocketPoolYieldStrategy is YieldStrategy {
 
     function deposit(uint256 assets) external override {
         require(availableDepositCapacity() > assets, "Deposit limit exceeded");
+        ERC20(underlyingAsset).safeTransferFrom(msg.sender, address(this), assets);
 
         // @dev unwrap
         weth.withdraw(assets);
